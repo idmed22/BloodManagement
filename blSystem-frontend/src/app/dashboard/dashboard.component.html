@@ -1,0 +1,83 @@
+<!-- dashboard.component.html -->
+<div class="container">
+    <div class="dashboard">
+        <i class="fa-solid fa-users"></i>
+        <h2>Available Donors</h2>
+        <span class="donor-count">{{ donorCount }}</span>
+    </div>
+
+    <div class="dashboard">
+        <i class="fa-solid fa-users"></i>
+        <h2>Recipients</h2>
+        <span class="recipient-count">{{ recipientCount }}</span>
+    </div>
+
+    <div class="dashboard">
+        <i class="fa-solid fa-spinner"></i>
+        <h2>Total Request</h2>
+        <span class="recipient-count">0</span>
+    </div>
+
+    <div class="dashboard">
+        <i class="fa-solid fa-droplet"></i>
+        <h2>Total Blood</h2>
+        <span class="blood-count">{{ totalBloodCount }}</span>
+    </div>
+</div>
+
+<div class="text">
+    <!-- <h4>Quantity Available in Stock</h4> -->
+    <h6>1 unité = 450 mililitres</h6>
+</div>
+
+
+<div class="blood-Group">
+    <div class="group">
+        <i class="fa-solid fa-droplet">
+            <h2>A+</h2>
+            <span>{{  bloodGroupCounts?.get('A_POSITIVE') || 0 }}</span>
+        </i>
+    </div>
+    <div class="group">
+        <i class="fa-solid fa-droplet">
+            <h2>A-</h2>
+            <span>{{ bloodGroupCounts?.get('A_NEGATIVE') || 0 }}</span>
+        </i>
+    </div>
+    <div class="group">
+        <i class="fa-solid fa-droplet">
+            <h2>B+</h2>
+            <span>{{ bloodGroupCounts?.get('B_POSITIVE') || 0 }}</span>
+        </i>
+    </div>
+    <div class="group">
+        <i class="fa-solid fa-droplet">
+            <h2>B-</h2>
+            <span>{{ bloodGroupCounts?.get('B_NEGATIVE') || 0 }}</span>
+        </i>
+    </div>
+    <div class="group">
+        <i class="fa-solid fa-droplet">
+            <h2>AB+</h2>
+            <span>{{ bloodGroupCounts?.get('AB_POSITIVE') || 0 }}</span>
+        </i>
+    </div>
+    <div class="group">
+        <i class="fa-solid fa-droplet">
+            <h2>AB-</h2>
+            <span>{{ bloodGroupCounts?.get('AB_NEGATIVE') || 0}}</span>
+        </i>
+    </div>
+    <div class="group">
+        <i class="fa-solid fa-droplet">
+            <h2>O+</h2>
+            <span>{{ bloodGroupCounts?.get('O_POSITIVE') || 0}}</span>
+        </i>
+    </div>
+    <div class="group">
+        <i class="fa-solid fa-droplet">
+            <h2>O-</h2>
+            <span>{{ bloodGroupCounts?.get('O_NEGATIVE') || 0}}</span>
+        </i>
+    </div>
+</div>

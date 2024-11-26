@@ -1,0 +1,29 @@
+<!-- app.component.html -->
+<div class="app-container">
+  <nav class="side-nav">
+    
+      <h5>🩸 Blood System </h5>
+        
+    <ul>
+      <li>
+        <a routerLink="/dashboard"><i class="fa-solid fa-house"></i> Dashboard</a>
+      </li>
+      <li>
+        <a routerLink="/donor-list"><i class="fa-solid fa-users"></i> Donors</a></li>
+      <li>
+        <a routerLink="/donation"><i class="fa-solid fa-hand-holding-medical"></i> Donation</a></li>
+      <li>
+        <a routerLink="/recipient"><i class="fa-solid fa-hospital-user"></i> Recipient</a>
+      </li>
+      <li>
+        <a routerLink="/request"> <i class="fa-solid fa-spinner"></i> Request</a>
+      </li>
+      <li>
+        <a routerLink="/blood"><i class="fa-sharp fa-solid fa-droplet"></i> Blood</a>
+      </li>
+    </ul>
+  </nav>
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+</div>

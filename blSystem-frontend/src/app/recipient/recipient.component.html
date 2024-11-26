@@ -1,0 +1,177 @@
+<h2>Recipient</h2>
+
+<!-- Add recipient button -->
+<p-button  [text]="true"
+           [raised]="true"
+           severity="info" 
+           [rounded]="true"
+           (click)="showAddForm()"
+           [style]="{ 'margin-bottom.px': 10 }">
+    <i class="fa-solid fa-plus"></i>
+</p-button>
+
+<!-- Dialog for adding a recipient -->
+<p-dialog header="Add Recipient" [(visible)]="showForm" [style]="{ 'width': '500px' }" [modal]="true" [resizable]="false" [showHeader]="true" [closable]="true" (onHide)="cancelAddBtn()">
+    <form (ngSubmit)="addRecipient(newRecipient)">
+      <div class="form-group">
+        <label for="recipientName">Name</label>
+        <input type="text" class="form-control" id="recipientName" [(ngModel)]="newRecipient.name" name="name">
+      </div>
+     
+
+      <div class="form-group">
+        <label for="gender">Gender</label>
+        <select class="form-control" id="gender" [(ngModel)]="newRecipient.gender" name="gender">
+          <option>MALE</option>
+          <option>FEMALE</option>
+          <option>OTHER</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="age">Age</label>
+        <input pInputText pKeyFilter="int" placeholder="age" [(ngModel)]="newRecipient.age" name="age" type="number"/>
+      </div>
+      <div class="form-group">
+        <label for="address">Address</label>
+        <input type="text" class="form-control" id="address" [(ngModel)]="newRecipient.address" name="address">
+      </div>
+      <!-- <div class="form-group">
+        <label for="bloodGroup">Blood Type</label>
+        <input type="text" class="form-control" id="bloodGroup" [(ngModel)]="newRecipient.bloodGroup" name="bloodGroup">
+      </div> -->
+     
+      <div class="form-group">
+        <label for="bloodGroup">Blood Group</label>
+        <select class="form-control" id="bloodGroup" [(ngModel)]="newRecipient.bloodGroup" name="bloodGroup">
+          <option *ngFor="let group of bloodGroups" [value]="group">{{ group }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="contactNumber">Contact Number</label>
+        <input type="text" class="form-control" id="contactNumber" [(ngModel)]="newRecipient.contactNumber" name="contactNumber">
+      </div>
+      <div class="form-group">
+        <label for="UpdateIsUrgent">isUrgent</label>
+        <select [(ngModel)]="newRecipient.urgent" name="UpdateIsUrgent">
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="benefitDate">Benefit Date</label>
+        <p-calendar [(ngModel)]="newRecipient.benefitDate" id="benefitDate" name="benefitDate" placeholder="date"></p-calendar>
+      </div>
+      
+      <p-button type="submit" label="save" [outlined]="true" severity="info" [style.margin-right.px]="10"></p-button>
+      <p-button label="Cancel" [outlined]="true" severity="warning" (click)="cancelAddBtn()"></p-button>
+    </form>
+  </p-dialog>
+  
+
+  <!-- Donors table -->
+<div class="container mt-4">
+    <div class="row">
+      <div class="col-md-12">  
+        <p-table 
+        [value]="recipients" 
+        styleClass="p-datatable-striped"
+        [tableStyle]="{ 'min-width': '30rem' }"
+        [paginator]="true"
+        [rows]="itemsPerPage" 
+        [paginatorPosition]="'bottom'"
+        (onPage)="onPageChange($event)" >
+        
+          <ng-template pTemplate="header">
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Gender</th>
+              <th>Age</th>
+              <!-- <th>Address</th> -->
+              <th>Benefit Date</th>
+              <th>Blood Group</th>
+              <th>Contact Nbr</th>
+              <th>Urgent</th>
+              <th></th> 
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-recipient>
+            <tr>
+              <td>{{ recipient.id }}</td>
+              <td>{{ recipient.name }}</td>
+              <td>{{ recipient.gender }}</td>
+              <td>{{ recipient.age }}</td>
+              <!-- <td>{{ recipient.address }}</td> -->
+              <td>{{ recipient.benefitDate }}</td>
+              <td><p-tag severity="danger"
+                [style]="{ 'background': 'linear-gradient(to top, #f77062 0%, #fe5196 100%)'}"
+                >{{recipient.bloodGroup}}</p-tag></td>
+              <td>{{ recipient.contactNumber }}</td>
+              <td><p-tag  [severity]="recipient.urgent ? 'success' : 'danger'">{{ recipient.urgent? 'Yes' : 'No'}}</p-tag></td>
+
+              <td>
+                <p-button severity="info" [text]="true" (click)="showUpdateForm(recipient.id)">
+                  <i class="fa-regular fa-pen-to-square" ></i>
+                </p-button>
+                <p-button severity="danger"  [text]="true" (click)="deleteRecipient(recipient.id)">
+                  <i class="fa-solid fa-trash"></i>
+                </p-button>  
+        
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="paginatorleft">
+            Showing {{ getRangeStart() }} to {{ getRangeEnd() }} of {{ totalEntries }} entries
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- Dialog for updating a donor -->
+<p-dialog header="Update Recipient" [(visible)]="updateMode" [style]="{ 'width': '500px' }" [modal]="true" [resizable]="false" [showHeader]="true" [closable]="true" (onHide)="cancelUpdateBtn()">
+    <form (ngSubmit)="updateRecipient(existingRecipient)">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" [(ngModel)]="existingRecipient.name" name="name">
+      </div>
+      <div class="form-group">
+        <label for="updateGender">Gender</label>
+        <select class="form-control" id="updateGender" [(ngModel)]="existingRecipient.gender" name="updateGender">
+          <option>MALE</option>
+          <option>FEMALE</option>
+          <option>OTHER</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="updateAge">Age</label>
+        <input pInputText pKeyFilter="int" placeholder="age" [(ngModel)]="existingRecipient.age" name="age" type="number"/>
+      </div>
+      <div class="form-group">
+        <label for="bloodGroup">Blood Group</label>
+        <select class="form-control" id="bloodGroup" [(ngModel)]="existingRecipient.bloodGroup" name="bloodGroup">
+          <option *ngFor="let group of bloodGroups" [value]="group">{{ group }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="updateContactNumber">Contact Number</label>
+        <input type="text" class="form-control" id="updateContactNumber" [(ngModel)]="existingRecipient.contactNumber" name="contactNumber">
+      </div>
+      <div class="form-group">
+        <label for="benefitDate">Benefit Date</label>
+        <p-calendar [(ngModel)]="existingRecipient.benefitDate" id="benefitDate" name="benefitDate" placeholder="date"></p-calendar>
+      </div>
+
+      <div class="form-group">
+        <label for="UpdateIsUrgent">Urgent</label>
+        <select [(ngModel)]="existingRecipient.urgent" name="UpdateIsUrgent">
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </select>
+      </div>
+      <p-button  type="submit" label="Update" [outlined]="true" severity="info" [style.margin-right.px]="10"></p-button>
+      <p-button label="Cancel" severity="warning"  [outlined]="true" (click)="cancelUpdateBtn()"></p-button>
+    </form>
+  </p-dialog>
+  

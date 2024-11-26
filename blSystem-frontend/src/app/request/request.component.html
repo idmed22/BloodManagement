@@ -1,0 +1,42 @@
+<div>
+  <h2>Blood Requests</h2>
+  
+  <!-- Add Request Form -->
+  <form (ngSubmit)="addRequest()">
+    <label for="recipientId">Recipient ID:</label>
+    <input type="text" id="recipientId" name="recipientId" [(ngModel)]="newRequest.recipientId" required>
+    
+    <!-- Add more fields as needed for the new request -->
+    
+    <button type="submit">Add Request</button>
+  </form>
+
+  <!-- List of Requests -->
+  <ul>
+    <li *ngFor="let request of requests">
+      <span (click)="selectRequest(request)">ID: {{ request.id }} - Recipient ID: {{ request.recipientId }}</span>
+      <button (click)="deleteRequest(request.id)">Delete</button>
+    </li>
+  </ul>
+
+
+<div *ngIf="selectedRequest">
+  <h2>Selected Request Details</h2>
+  <p>ID: {{ selectedRequest.id }}</p>
+  <p>Recipient ID: {{ selectedRequest.recipientId }}</p>
+  <!-- Add more details as needed for the selected request -->
+
+  <h3>Assign Donor</h3>
+  <!-- Donor Information Form -->
+  <form (submit)="assignDonor()">
+    <label for="donorName">Donor Name:</label>
+    <input type="text" id="donorName" name="donorName" [(ngModel)]="donor.name" required>
+
+    <!-- Add more fields for donor information as needed -->
+
+    <button type="submit">Assign Donor</button>
+  </form>
+</div>
+<div *ngIf="!selectedRequest">
+  <p>No request selected.</p>
+</div>

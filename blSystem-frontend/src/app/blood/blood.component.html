@@ -1,0 +1,145 @@
+<!-- component.html -->
+
+<!-- Add Donor button -->
+<p-button [text]="true" [raised]="true" severity="info" [rounded]="true" (click)="showAddForm()" [style]="{ 'margin-bottom.px': 10 }">
+    <i class="fa-solid fa-plus"></i>
+  </p-button>
+
+<p-table 
+    [value]="bloods" 
+    styleClass="p-datatable-striped"
+    [rows]="10" 
+    [responsive]="true"
+    [paginator]="true" 
+    [rows]="itemsPerPage" 
+    [paginatorPosition]="'bottom'"
+    (onPage)="onPageChange($event)">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>ID</th>
+            <th>Type</th>
+            <th>Component</th>
+            <th>Collection Date</th>
+            <th>Expiry Date</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-blood>
+        <tr>
+            <td>{{blood.id}}</td>
+            <td><p-tag severity="danger">{{blood.type}}</p-tag></td>
+            <td><p-tag [style]="{ 'background': 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'}">{{blood.component}}</p-tag></td>
+            <td>{{blood.collectionDate}}</td>
+            <td>{{blood.expiryDate}}</td>
+
+            <td><p-tag severity="success">{{blood.status}}</p-tag></td>
+            <p-button severity="primary" 
+                      [text]="true"  
+                      [style.margin-right.px]="5"
+                      (click)="showUpdateForm(blood.id)">
+                <i class="fa-regular fa-pen-to-square"></i>
+            </p-button>
+            <p-button severity="danger" [text]="true" (click)="deleteBlood(blood.id)">
+                <i class="fa-solid fa-trash"></i>
+            </p-button>  
+        </tr>
+    </ng-template>
+</p-table>
+
+
+<!-- Dialog for adding a donor -->
+<p-dialog header="Add New Blood" 
+          [(visible)]="showForm" 
+          [style]="{ 'width': '500px' }" 
+          [modal]="true" 
+          [resizable]="false" 
+          [showHeader]="true" 
+          [closable]="true" (onHide)="cancelAdd()">
+    <form (ngSubmit)="addBlood(newBlood)">
+
+        <div class="form-group">
+            <label for="bloodGroup">Blood Group</label>
+            <select class="form-control" id="bloodGroup" [(ngModel)]="newBlood.type" name="bloodGroup" >
+              <option *ngFor="let group of bloodGroups" [value]="group">{{ group }}</option>
+            </select>
+        </div>
+     
+        <div class="form-group">
+            <label for="component">Component</label>
+            <select class="form-control" id="component" [(ngModel)]="newBlood.component" name="component">
+                <option *ngFor="let type of bloodTypes" (click)="onSelectType(type)">{{ type }}</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="component">Status</label>
+            <select class="form-control" id="status" [(ngModel)]="newBlood.status" name="status" >
+              <option *ngFor="let status of bloodStatus" [value]="status">{{ status }}</option>
+            </select>
+        </div>
+     
+     
+  
+      <div class="form-group">
+            <label for="collectionDate">Collection Date</label>
+            <p-calendar [(ngModel)]="newBlood.collectionDate" id="collectionDate" name="collectionDate" placeholder="date"></p-calendar>
+      </div>
+
+      <div class="form-group">
+            <label for="expiryDate">Expiry Date</label>
+            <p-calendar [(ngModel)]="newBlood.expiryDate" id="expiryDate" name="expiryDate" placeholder="date"></p-calendar>
+      </div>
+      <p-button type="submit" label="save" [outlined]="true" severity="info" [style.margin-right.px]="10"></p-button>
+      <p-button label="Cancel"  [outlined]="true" severity="warning" (click)="cancelAdd()"></p-button>
+    </form>
+  </p-dialog>
+
+
+
+  <!-- Dialog for adding a donor -->
+<p-dialog header="Update Existing Blood" 
+          [(visible)]="updateMode" 
+          [style]="{ 'width': '500px' }" 
+          [modal]="true" 
+          [resizable]="false"
+          [showHeader]="true" 
+          [closable]="true" (onHide)="cancelUpdate()">
+    <form (ngSubmit)="updateBlood(existingBlood)">
+
+        <div class="form-group">
+            <label for="UpdateBlood">Blood Group</label>
+            <select class="form-control" id="UpdateBlood" [(ngModel)]="existingBlood.type" name="UpdateBlood" >
+              <option *ngFor="let group of bloodGroups" [value]="group">{{ group }}</option>
+            </select>
+        </div>
+     
+        <div class="form-group">
+            <label for="component">Component</label>
+            <select class="form-control" id="component" [(ngModel)]="existingBlood.component" name="component">
+                <option *ngFor="let type of bloodTypes" (click)="onSelectType(type)">{{ type }}</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="status">Status</label>
+            <select class="form-control" id="status" [(ngModel)]="existingBlood.status" name="status" >
+              <option *ngFor="let status of bloodStatus" [value]="status">{{ status }}</option>
+            </select>
+        </div>
+     
+     
+  
+      <div class="form-group">
+            <label for="collectionDate">Collection Date</label>
+            <p-calendar [(ngModel)]="existingBlood.collectionDate" id="collectionDate" name="collectionDate" placeholder="date"></p-calendar>
+      </div>
+
+      <div class="form-group">
+            <label for="expiryDate">Expiry Date</label>
+            <p-calendar [(ngModel)]="existingBlood.expiryDate" id="expiryDate" name="expiryDate" placeholder="date"></p-calendar>
+      </div>
+      <p-button type="submit" label="save" [outlined]="true" severity="info" [style.margin-right.px]="10"></p-button>
+      <p-button label="Cancel"  [outlined]="true" severity="warning" (click)="cancelUpdate()"></p-button>
+    </form>
+  </p-dialog>
